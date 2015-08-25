@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QDebug>
+#include <filemanager.h>
+#include <student.h>
 
 namespace Ui {
 class MainWindow;
@@ -18,6 +20,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QList<Student> students;
+    QString findName(int id);
+    int findId(QString &name);
 public slots:
     void gotText();
 };
