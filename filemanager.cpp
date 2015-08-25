@@ -33,3 +33,55 @@ QList<Student> FileManager::readIds()
     ids.close();
     return students;
 }
+void FileManager::changeStatus(QString name)
+{
+    QList<QString> rawFile;
+    QFile log("attendance.log");
+    if(!log.exists())
+    {
+        qDebug() << "File does not exist\nCreating...";
+        log.open(QIODevice::ReadWrite | QIODevice::Text);
+        log.flush();
+        log.close();
+    }
+    if(!log.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "Can't open file";
+    }
+    QTextStream logData(&log);
+    while(!logData.atEnd())
+    {
+        rawFile.append(logData.readLine());
+
+    }
+    logData.flush();
+    log.close();
+    bool foundName = false;
+    int days;
+    for(int i = 0;i<rawFile.size();i++)
+    {
+        QStringList lineParts = rawFile.at(i).split(";",QString::SkipEmptyParts);
+        if(name==lineParts.at(0))
+        {
+            foundName = true;
+            days = lineParts.at(1).toInt()+1;
+            QString newName = name +";"+QString::number(days);
+            rawFile.replace(i,newName);
+        }
+    }
+    if(!foundName)
+    {
+        rawFile.append(name + ";1");
+    }
+    if(!log.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Can't open file";
+    }
+    QTextStream out(&log);
+    for(int i = 0;i<rawFile.size();i++)
+    {
+        out << rawFile.at(i) +"\n";
+    }
+    out.flush();
+    log.close();
+}

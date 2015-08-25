@@ -10,6 +10,7 @@ class FileManager
 public:
     FileManager();
     QList<Student> readIds();
+    void changeStatus(QString name);
 private:
 };
 

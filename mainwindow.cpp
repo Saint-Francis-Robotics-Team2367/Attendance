@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->numberEntry,SIGNAL(returnPressed()),this,SLOT(gotText()));
-    FileManager *manager = new FileManager();
+    manager = new FileManager();
     this->students = manager->readIds();
 }
 
@@ -19,8 +19,10 @@ MainWindow::~MainWindow()
 void MainWindow::gotText()
 {
     qDebug() << ui->numberEntry->text();
-    qDebug() << this->findName(ui->numberEntry->text().toInt());
+    QString name = this->findName(ui->numberEntry->text().toInt());
+    qDebug() << name;
     ui->numberEntry->setText("");
+    this->manager->changeStatus(name);
 }
 QString MainWindow::findName(int id)
 {

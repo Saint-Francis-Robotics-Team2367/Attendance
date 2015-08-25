@@ -23,6 +23,7 @@ private:
     QList<Student> students;
     QString findName(int id);
     int findId(QString &name);
+    FileManager *manager;
 public slots:
     void gotText();
 };
