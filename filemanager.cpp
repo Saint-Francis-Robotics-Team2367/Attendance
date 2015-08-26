@@ -4,10 +4,10 @@ FileManager::FileManager()
 {
 
 }
-QList<Student> FileManager::readIds()
+QList<Student*> FileManager::readIds()
 {
     QFile ids("users.ids");
-    QList<Student> students;
+    QList<Student*> students;
     if(!ids.exists())
     {
         qDebug() << "File does not exist\nCreating...";
@@ -27,7 +27,7 @@ QList<Student> FileManager::readIds()
         qDebug() << id;
         QString name = line.section(' ',1);
         qDebug() << name;
-        students.append(Student(name,id.toInt()));
+        students.append(new Student(name,id.toInt()));
     }
     in.flush();
     ids.close();
@@ -84,4 +84,35 @@ void FileManager::changeStatus(QString name)
     }
     out.flush();
     log.close();
+}
+
+void FileManager::addUser(QString name, QString id)
+{
+    QFile ids("users.ids");
+    QStringList rawText;
+    if(!ids.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "Can't open file";
+    }
+    QTextStream in(&ids);
+    while(!in.atEnd())
+    {
+        QString line = in.readLine();
+        rawText.append(line);
+    }
+    in.flush();
+    ids.close();
+    rawText.append(id +" " +name);
+    if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Can't open file";
+    }
+
+    QTextStream out(&ids);
+    for(int i = 0;i<rawText.size();i++)
+    {
+        out << rawText.at(i) +"\n";
+    }
+    out.flush();
+    ids.close();
 }

@@ -23,6 +23,21 @@ void Student::setName(const QString &value)
 {
     name = value;
 }
+QTime *Student::getLastSignIn()
+{
+    return &lastSignIn;
+}
+bool Student::getCorrectSignIn() const
+{
+    return correctSignIn;
+}
+
+void Student::setCorrectSignOut(bool value)
+{
+    correctSignIn = value;
+}
+
+
 
 
 

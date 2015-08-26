@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <filemanager.h>
 #include <student.h>
+#include <QInputDialog>
 
 namespace Ui {
 class MainWindow;
@@ -20,12 +21,15 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    QList<Student> students;
+    QList<Student*> students;
     QString findName(int id);
     int findId(QString &name);
     FileManager *manager;
+    Student *findStudent(int id);
+    Student *findStudent(QString &name);
 public slots:
-    void gotText();
+    int gotText();
+    void newUser();
 };
 
 #endif // MAINWINDOW_H
