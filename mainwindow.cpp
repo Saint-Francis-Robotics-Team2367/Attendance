@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->numberEntry,SIGNAL(returnPressed()),this,SLOT(gotText()));
-    connect(ui->actionNewUser,SIGNAL(triggered(bool)),this,SLOT(newUser()));
+   // connect(ui->actionNewUser,SIGNAL(triggered(bool)),this,SLOT(newUser()));
     manager = new FileManager();
     this->students = manager->readIds();
     this->setWindowTitle("SFRT Attendance");
@@ -97,6 +97,7 @@ Student *MainWindow::findStudent(int id)
             return (this->students.at(i));
         }
     }
+        return (Student *)NULL;
 }
 Student *MainWindow::findStudent(QString &name)
 {
@@ -107,6 +108,7 @@ Student *MainWindow::findStudent(QString &name)
             return (this->students.at(i));
         }
     }
+    return (Student *)NULL;
 }
 void MainWindow::newUser()
 {
