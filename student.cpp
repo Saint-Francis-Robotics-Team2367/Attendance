@@ -4,6 +4,8 @@ Student::Student(QString name, int id)
 {
     this->name = name;
     this->id = id;
+
+    this->isSignIn = false;    //a new Student is not signed in when he is added
 }
 int Student::getId() const
 {
@@ -27,19 +29,12 @@ QTime *Student::getLastSignIn()
 {
     return &lastSignIn;
 }
-bool Student::getCorrectSignIn() const
+bool Student::isSignedIn() const
 {
-    return correctSignIn;
+    return isSignIn;
 }
 
-void Student::setCorrectSignOut(bool value)
+void Student::setSignedIn(bool value)
 {
-    correctSignIn = value;
+    isSignIn = value;
 }
-
-
-
-
-
-
-

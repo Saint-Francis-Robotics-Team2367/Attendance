@@ -12,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
     this->students = manager->readIds();
     this->setWindowTitle("SFRT Attendance");
     this->setWindowIcon(QIcon("icon.png"));
+
+    //code for testing because i cannot manually add users
+    students.append(new Student("Nilay Pachauri",2171048));
 }
 
 MainWindow::~MainWindow()
@@ -31,15 +34,15 @@ int MainWindow::gotText()
     }
     Student *currStudent = findStudent(name); //gets the student object
 
-    if (!currStudent->getCorrectSignIn())   {   //if the user is not signed in
+    if (!currStudent->isSignedIn())   {   //if the user is not signed in
 
-        currStudent->setCorrectSignOut(true);   //sign him in
+        currStudent->setSignedIn(true);   //sign him in
         ui->log->append("Signed in: " + name);
         currStudent->getLastSignIn()->start();  //and start the timer for how long he is there
 
-    } else if (currStudent->getCorrectSignIn()) {   //if the user is signed in
+    } else if (currStudent->isSignedIn()) {   //if the user is signed in
 
-        currStudent->setCorrectSignOut(false);  //sign him out
+        currStudent->setSignedIn(false);  //sign him out
         int elapsed = currStudent->getLastSignIn()->elapsed();  //magically get the numbers for how long he has been there
         int seconds = (int) (elapsed / 1000) % 60 ;
         int minutes = (int) ((elapsed / (1000*60)) % 60);
