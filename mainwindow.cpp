@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <stdio.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -52,6 +53,18 @@ int MainWindow::gotText()
         int hours   = (int) ((elapsed / (1000*60*60)) % 24);
         ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
         currStudent->getLastSignIn()->restart();
+
+        QString name = currStudent->getName();
+        QString signIN = currStudent->getLastSignIn()->toString();
+        QString signOUT = (QTime::currentTime().toString());
+        //int date = (const int QDate::month());
+        QString s = QDate::currentDate().toString();
+        QFile file("data.csv");
+        if (file.open(QFile::WriteOnly|QFile::Append))
+        {
+        QTextStream stream(&file);
+        stream << name << "," << signIN << "," << signOUT <<"," << s << "\r\n"; // this writes first line with two columns
+        file.close();
     }
     else if(currStudent->getLastSignIn()->elapsed()>5400000)
     {
@@ -62,10 +75,15 @@ int MainWindow::gotText()
         int hours   = (int) ((elapsed / (1000*60*60)) % 24);
         ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
         currStudent->getLastSignIn()->restart();
-        this->manager->changeStatus(name);
+        this->manager->changeStatus(name);        
     }
     return 1;
+
+
+
+    }
 }
+
 QString MainWindow::findName(int id)
 {
     for(int i = 0;i<this->students.size();i++)
