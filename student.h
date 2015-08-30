@@ -15,14 +15,15 @@ public:
 
     QTime *getLastSignIn();
 
-    bool getCorrectSignIn() const;
-    void setCorrectSignOut(bool value);
+    bool isSignedIn() const;
+    void setSignedIn(bool value);
 
 private:
     int id;
     QString name;
     QTime lastSignIn;
-    bool correctSignIn;
+    bool isSignIn;
+
 };
 
 #endif // STUDENT_H
