@@ -35,46 +35,27 @@ int MainWindow::gotText()
     }
     Student *currStudent = findStudent(name); //gets the student object
 
-    if (!currStudent->isSignedIn())   {   //if the user is not signed in
+    if (!currStudent->isSignedIn())
+    {   //if the user is not signed in
 
-        currStudent->setSignedIn(true);   //sign him in
-        ui->log->append("Signed in: " + name);
-        currStudent->getLastSignIn()->start();  //and start the timer for how long he is there
+            currStudent->setSignedIn(true);   //sign him in
+            ui->log->append("Signed in: " + name);
+            currStudent->getLastSignIn()->start();  //and start the timer for how long he is there
 
-<<<<<<< HEAD
-    else if(currStudent->getLastSignIn()->elapsed()<5400000)//5400000
-    {
-        int elapsed = currStudent->getLastSignIn()->elapsed();
-        int seconds = (int) (elapsed / 1000) % 60 ;
-        int minutes = (int) ((elapsed / (1000*60)) % 60);
-        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
-        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
-        currStudent->getLastSignIn()->restart();
-
-        QString name = currStudent->getName();
-        QString signIN = currStudent->getLastSignIn()->toString();
-        QString signOUT = (QTime::currentTime().toString());
-        //int date = (const int QDate::month());
-        QString s = QDate::currentDate().toString();
-        QFile file("data.csv");
-        if (file.open(QFile::WriteOnly|QFile::Append))
-        {
-        QTextStream stream(&file);
-        stream << name << "," << signIN << "," << signOUT <<"," << s << "\r\n"; // this writes first line with two columns
-        file.close();
+            QString name = currStudent->getName();
+            QString signIN = currStudent->getLastSignIn()->toString();
+            QString signOUT = (QTime::currentTime().toString());
+            //int date = (const int QDate::month());
+            QString s = QDate::currentDate().toString();
+            QFile file("data.csv");
+            if (file.open(QFile::WriteOnly|QFile::Append))
+            {
+            QTextStream stream(&file);
+            stream << name << "," << signIN << "," << signOUT <<"," << s << "\r\n"; // this writes first line with two columns
+            file.close();
+        }
     }
-    else if(currStudent->getLastSignIn()->elapsed()>5400000)
-    {
-        currStudent->setCorrectSignOut(true);
-        int elapsed = currStudent->getLastSignIn()->elapsed();
-        int seconds = (int) (elapsed / 1000) % 60 ;
-        int minutes = (int) ((elapsed / (1000*60)) % 60);
-        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
-        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
-        currStudent->getLastSignIn()->restart();
-        this->manager->changeStatus(name);        
-=======
-    } else if (currStudent->isSignedIn()) {   //if the user is signed in
+     else if (currStudent->isSignedIn()) {   //if the user is signed in
 
         currStudent->setSignedIn(false);  //sign him out
         int elapsed = currStudent->getLastSignIn()->elapsed();  //magically get the numbers for how long he has been there
@@ -83,8 +64,6 @@ int MainWindow::gotText()
         int hours   = (int) ((elapsed / (1000*60*60)) % 24);
         ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
         currStudent->getLastSignIn()->restart();    //and restart the timer?
-
->>>>>>> origin/master
     }
 
     //if(currStudent->getLastSignIn()->elapsed()==0 || (currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000))
@@ -125,7 +104,6 @@ int MainWindow::gotText()
 
 
 
-    }
 }
 
 QString MainWindow::findName(int id)
