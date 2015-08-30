@@ -42,18 +42,8 @@ int MainWindow::gotText()
             ui->log->append("Signed in: " + name);
             currStudent->getLastSignIn()->start();  //and start the timer for how long he is there
 
-            QString name = currStudent->getName();
-            QString signIN = currStudent->getLastSignIn()->toString();
-            QString signOUT = (QTime::currentTime().toString());
-            //int date = (const int QDate::month());
-            QString s = QDate::currentDate().toString();
-            QFile file("data.csv");
-            if (file.open(QFile::WriteOnly|QFile::Append))
-            {
-            QTextStream stream(&file);
-            stream << name << "," << signIN << "," << signOUT <<"," << s << "\r\n"; // this writes first line with two columns
-            file.close();
-        }
+
+
     }
      else if (currStudent->isSignedIn()) {   //if the user is signed in
 
@@ -64,6 +54,18 @@ int MainWindow::gotText()
         int hours   = (int) ((elapsed / (1000*60*60)) % 24);
         ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
         currStudent->getLastSignIn()->restart();    //and restart the timer?
+
+        QString name = currStudent->getName();
+        QString signIN = currStudent->getLastSignIn()->toString();
+        QString signOUT = (QTime::currentTime().toString());
+        //int date = (const int QDate::month());
+        QString s = QDate::currentDate().toString();
+        QFile file("data.csv");
+        if (file.open(QFile::WriteOnly|QFile::Append))
+        {
+        QTextStream stream(&file);
+        stream << name << "," << signIN << "," << signOUT <<"," << s << "\r\n"; // this writes first line with two columns
+        file.close();
     }
 
     //if(currStudent->getLastSignIn()->elapsed()==0 || (currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000))
@@ -100,9 +102,8 @@ int MainWindow::gotText()
 //        currStudent->getLastSignIn()->restart();
 //        this->manager->changeStatus(name);
 //    }
+    }
     return 1;
-
-
 
 }
 
