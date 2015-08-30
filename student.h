@@ -23,6 +23,7 @@ private:
     QString name;
     QTime lastSignIn;
     bool correctSignIn;
+
 };
 
 #endif // STUDENT_H

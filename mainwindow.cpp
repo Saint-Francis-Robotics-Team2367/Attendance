@@ -29,41 +29,60 @@ int MainWindow::gotText()
         return 0;
 
     }
-    Student *currStudent = findStudent(name);
-    if(currStudent->getLastSignIn()->elapsed()==0 || (currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000))
-    {
-        currStudent->setCorrectSignOut(false);
+    Student *currStudent = findStudent(name); //gets the student object
+
+    if (!currStudent->getCorrectSignIn())   {   //if the user is not signed in
+
+        currStudent->setCorrectSignOut(true);   //sign him in
         ui->log->append("Signed in: " + name);
-        currStudent->getLastSignIn()->start();
-    }
-    else if(!currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000)//57600000
-    {
-        currStudent->setCorrectSignOut(false);
-        ui->log->append("You did not sign-out last time, resigning-in");
-        ui->log->append("Signed in: " + name);
-        currStudent->getLastSignIn()->restart();
+        currStudent->getLastSignIn()->start();  //and start the timer for how long he is there
+
+    } else if (currStudent->getCorrectSignIn()) {   //if the user is signed in
+
+        currStudent->setCorrectSignOut(false);  //sign him out
+        int elapsed = currStudent->getLastSignIn()->elapsed();  //magically get the numbers for how long he has been there
+        int seconds = (int) (elapsed / 1000) % 60 ;
+        int minutes = (int) ((elapsed / (1000*60)) % 60);
+        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
+        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
+        currStudent->getLastSignIn()->restart();    //and restart the timer?
+
     }
 
-    else if(currStudent->getLastSignIn()->elapsed()<5400000)//5400000
-    {
-        int elapsed = currStudent->getLastSignIn()->elapsed();
-        int seconds = (int) (elapsed / 1000) % 60 ;
-        int minutes = (int) ((elapsed / (1000*60)) % 60);
-        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
-        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
-        currStudent->getLastSignIn()->restart();
-    }
-    else if(currStudent->getLastSignIn()->elapsed()>5400000)
-    {
-        currStudent->setCorrectSignOut(true);
-        int elapsed = currStudent->getLastSignIn()->elapsed();
-        int seconds = (int) (elapsed / 1000) % 60 ;
-        int minutes = (int) ((elapsed / (1000*60)) % 60);
-        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
-        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
-        currStudent->getLastSignIn()->restart();
-        this->manager->changeStatus(name);
-    }
+    //if(currStudent->getLastSignIn()->elapsed()==0 || (currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000))
+//    {
+//        currStudent->setCorrectSignOut(false);
+//        ui->log->append("Signed in: " + name);
+//        currStudent->getLastSignIn()->start();
+//    }
+//    else if(!currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000)//57600000 //16 hours in millesonds
+//    {
+//        currStudent->setCorrectSignOut(false);
+//        ui->log->append("You did not sign-out last time, resigning-in");
+//        ui->log->append("Signed in: " + name);
+//        currStudent->getLastSignIn()->restart();
+//    }
+
+//    else if(currStudent->getLastSignIn()->elapsed()<5400000)//5400000   //1 hour 30 minutes in seconds
+//    {
+//        int elapsed = currStudent->getLastSignIn()->elapsed();
+//        int seconds = (int) (elapsed / 1000) % 60 ;
+//        int minutes = (int) ((elapsed / (1000*60)) % 60);
+//        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
+//        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
+//        currStudent->getLastSignIn()->restart();
+//    }
+//    else if(currStudent->getLastSignIn()->elapsed()>5400000)
+//    {
+//        currStudent->setCorrectSignOut(true);
+//        int elapsed = currStudent->getLastSignIn()->elapsed();
+//        int seconds = (int) (elapsed / 1000) % 60 ;
+//        int minutes = (int) ((elapsed / (1000*60)) % 60);
+//        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
+//        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
+//        currStudent->getLastSignIn()->restart();
+//        this->manager->changeStatus(name);
+//    }
     return 1;
 }
 QString MainWindow::findName(int id)
@@ -98,7 +117,7 @@ Student *MainWindow::findStudent(int id)
         }
     }
 }
-Student *MainWindow::findStudent(QString &name)
+Student *MainWindow::findStudent(QString &name) //looks through array to find the student and returns the Student object
 {
     for(int i = 0;i<this->students.size();i++)
     {
