@@ -50,7 +50,7 @@ int MainWindow::gotText()
         QFile file("data.csv");
 
         QFileInfo fileInfo("data.csv");
-        ui->log->append(fileInfo.absoluteFilePath());
+        //ui->log->append(fileInfo.absoluteFilePath());
 
         if (file.open(QFile::WriteOnly|QFile::Append))
         {
