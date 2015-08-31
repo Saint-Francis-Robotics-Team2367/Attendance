@@ -22,3 +22,5 @@ HEADERS  += mainwindow.h \
     filemanager.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES +=

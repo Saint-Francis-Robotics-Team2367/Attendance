@@ -35,7 +35,7 @@ int MainWindow::gotText()
     }
     Student *currStudent = findStudent(name); //gets the student object
 
-    QString name = currStudent->getName();
+    name = currStudent->getName();  //really redundant fix soon please
     QString time = (QTime::currentTime().toString());
     //int date = (const int QDate::month());
     QString date = QDate::currentDate().toString();
@@ -48,11 +48,17 @@ int MainWindow::gotText()
         currStudent->getLastSignIn()->start();  //and start the timer for how long he is there
 
         QFile file("data.csv");
+
+        QFileInfo fileInfo("data.csv");
+        ui->log->append(fileInfo.absoluteFilePath());
+
         if (file.open(QFile::WriteOnly|QFile::Append))
         {
             QTextStream stream(&file);
             stream << name << "," << time <<"," << "Sign In," << date << "\r\n"; // this writes first line with two columns
             file.close();
+        } else {
+            ui->log->append("This shit don't work");
         }
 
     }
