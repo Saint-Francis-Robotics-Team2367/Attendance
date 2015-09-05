@@ -58,7 +58,7 @@ int MainWindow::gotText()
             stream << name << "," << time <<"," << "Sign In," << date << "\r\n"; // this writes first line with two columns
             file.close();
         } else {
-            ui->log->append("This shit don't work");
+            ui->log->append("GET REKT!");
         }
 
     }
@@ -73,13 +73,26 @@ int MainWindow::gotText()
         currStudent->getLastSignIn()->restart();    //and restart the timer?
 
 
+        float test2 = 0.000000000000001;
+
         QFile file("data.csv");
+        QFile file2("statLog.csv");
+
         if (file.open(QFile::WriteOnly|QFile::Append))
         {
             QTextStream stream(&file);
             stream << name << "," << time <<"," << "Sign Out," << date << "\r\n"; // this writes first line with two columns
             file.close();
         }
+
+        if (file2.open(QFile::WriteOnly|QFile::Append))
+        {
+            QTextStream stream2(&file2);
+            stream2 << test2 << "\r\n"; // this writes first line with two columns
+            file2.close();
+        }
+
+
 
         //if(currStudent->getLastSignIn()->elapsed()==0 || (currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000))
         //    {
