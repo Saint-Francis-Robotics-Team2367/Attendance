@@ -23,13 +23,11 @@ QList<Student*> FileManager::readIds()
     while(!in.atEnd())
     {
         QString line = in.readLine();
-        QString studentID = line.section(' ',0,0);
-        qDebug() << studentID;
-        QString barcodeID = line.section(' ',1,1);
-        qDebug() << barcodeID;
-        QString name = line.section(' ',2);
+        QString id = line.section(' ',0,0);
+        qDebug() << id;
+        QString name = line.section(' ',1);
         qDebug() << name;
-        students.append(new Student(name,barcodeID.toInt(), studentID.toInt()));
+        students.append(new Student(name,id.toInt()));
     }
     in.flush();
     ids.close();

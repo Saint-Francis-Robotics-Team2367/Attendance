@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowIcon(QIcon("icon.png"));
 
     //code for testing because i cannot manually add users
-    students.append(new Student("Nilay Pachauri", 22906795, 2171048));
+    students.append(new Student("Nilay Pachauri",2171048));
 }
 
 MainWindow::~MainWindow()
@@ -124,7 +124,7 @@ QString MainWindow::findName(int id)
 {
     for(int i = 0;i<this->students.size();i++)
     {
-        if(this->students.at(i)->getStudentID() == id || this->students.at(i)->getBarcodeID() == id)
+        if(this->students.at(i)->getId()==id)
         {
             return this->students.at(i)->getName();
         }
@@ -137,17 +137,16 @@ int MainWindow::findId(QString &name)
     {
         if(this->students.at(i)->getName()==name)
         {
-            return this->students.at(i)->getStudentID();
+            return this->students.at(i)->getId();
         }
     }
     return -1;
 }
-
 Student *MainWindow::findStudent(int id)
 {
     for(int i = 0;i<this->students.size();i++)
     {
-        if(this->students.at(i)->getStudentID() == id || this->students.at(i)->getBarcodeID() == id)
+        if(this->students.at(i)->getId()==id)
         {
             return (this->students.at(i));
         }
@@ -168,8 +167,7 @@ Student *MainWindow::findStudent(QString &name) //looks through array to find th
 void MainWindow::newUser()
 {
     QString name = QInputDialog::getText(this, tr("What is your name"),tr("Name:"), QLineEdit::Normal,"John Doe");
-    QString barcodeId = QInputDialog::getText(this, tr("What is your barcode ID #"), tr("ID #:"), QLineEdit::Normal, "5678");
-    QString studentID = QInputDialog::getText(this, tr("What is your student ID #"), tr("ID #:"), QLineEdit::Normal,"1234");
-    this->manager->addUser(name,studentID);
-    this->students.append(new Student(name, barcodeId.toInt(), studentID.toInt()));
+    QString id = QInputDialog::getText(this, tr("What is your id #"),tr("Id #:"), QLineEdit::Normal,"1234");
+    this->manager->addUser(name,id);
+    this->students.append(new Student(name,id.toInt()));
 }

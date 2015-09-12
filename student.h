@@ -5,12 +5,10 @@
 class Student
 {
 public:
-    Student(QString name, int barcodeID, int studentID);
+    Student(QString name, int id);
 
-    int getStudentID() const;
-    void setStudentID(int value);
-
-
+    int getId() const;
+    void setId(int value);
 
     QString getName() const;
     void setName(const QString &value);
@@ -20,12 +18,8 @@ public:
     bool isSignedIn() const;
     void setSignedIn(bool value);
 
-    int getBarcodeID() const;
-    void setBarcodeID(int value);
-
 private:
-    int studentID;
-    int barcodeID;
+    int id;
     QString name;
     QTime lastSignIn;
     bool isSignIn;
