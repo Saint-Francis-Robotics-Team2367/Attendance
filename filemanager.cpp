@@ -2,35 +2,37 @@
 
 FileManager::FileManager()
 {
-
+    ids = new QFile("users.ids");
 }
 QList<Student*> FileManager::readIds()
 {
-    QFile ids("users.ids");
+    
     QList<Student*> students;
-    if(!ids.exists())
+    if(!ids->exists())
     {
         qDebug() << "File does not exist\nCreating...";
-        ids.open(QIODevice::ReadWrite | QIODevice::Text);
-        ids.flush();
-        ids.close();
+        ids->open(QIODevice::ReadWrite | QIODevice::Text);
+        ids->flush();
+        ids->close();
     }
-    if(!ids.open(QIODevice::ReadOnly | QIODevice::Text))
+    if(!ids->open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug() << "Can't open file";
     }
-    QTextStream in(&ids);
+    QTextStream in(ids);
     while(!in.atEnd())
     {
         QString line = in.readLine();
-        QString id = line.section(' ',0,0);
-        qDebug() << id;
-        QString name = line.section(' ',1);
+        QString studentID = line.section(';',0,0);
+        qDebug() << studentID;
+        QString barcodeID = line.section(';',1,1);
+        qDebug() << barcodeID;
+        QString name = line.section(';',2);
         qDebug() << name;
-        students.append(new Student(name,id.toInt()));
+        students.append(new Student(name,barcodeID.toInt(), studentID.toInt()));
     }
     in.flush();
-    ids.close();
+    ids->close();
     return students;
 }
 void FileManager::changeStatus(QString name)
@@ -52,7 +54,7 @@ void FileManager::changeStatus(QString name)
     while(!logData.atEnd())
     {
         rawFile.append(logData.readLine());
-
+        
     }
     logData.flush();
     log.close();
@@ -86,33 +88,4 @@ void FileManager::changeStatus(QString name)
     log.close();
 }
 
-void FileManager::addUser(QString name, QString id)
-{
-    QFile ids("users.ids");
-    QStringList rawText;
-    if(!ids.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qDebug() << "Can't open file";
-    }
-    QTextStream in(&ids);
-    while(!in.atEnd())
-    {
-        QString line = in.readLine();
-        rawText.append(line);
-    }
-    in.flush();
-    ids.close();
-    rawText.append(id +" " +name);
-    if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-        qDebug() << "Can't open file";
-    }
 
-    QTextStream out(&ids);
-    for(int i = 0;i<rawText.size();i++)
-    {
-        out << rawText.at(i) +"\n";
-    }
-    out.flush();
-    ids.close();
-}

@@ -8,17 +8,17 @@
 #include <QInputDialog>
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+    
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
+    
 private:
     Ui::MainWindow *ui;
     QList<Student*> students;
@@ -27,9 +27,8 @@ private:
     FileManager *manager;
     Student *findStudent(int id);
     Student *findStudent(QString &name);
-public slots:
+    public slots:
     int gotText();
-    void newUser();
 };
 
 #endif // MAINWINDOW_H
