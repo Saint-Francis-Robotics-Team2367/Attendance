@@ -128,9 +128,9 @@ Student *MainWindow::findStudent(QString &name) //looks through array to find th
 }
 void MainWindow::addNewUser()
 {
-    QString name = QInputDialog::getText(this, tr("What is your name"),tr("Name:"), QLineEdit::Normal,"John Doe");
-    QString id = QInputDialog::getText(this, tr("What is your id #"),tr("Id #:"), QLineEdit::Normal,"1234");
-    QString barcode = QInputDialog::getText(this, tr("Scan your barcode"),tr("Id #:"), QLineEdit::Normal,"");
+    QString name = QInputDialog::getText(this, tr("What is your name"),tr("Enter name:"), QLineEdit::Normal,"John Doe");
+    QString id = QInputDialog::getText(this, tr("ID #"),tr("Enter school ID #:"), QLineEdit::Normal,"1234");
+    QString barcode = QInputDialog::getText(this, tr("Barcode"),tr("Scan your barcode:"), QLineEdit::Normal,"");
     this->manager->addUser(name,id,barcode);
     this->students.append(new Student(name,barcode.toInt(),id.toInt()));
 }
