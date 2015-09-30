@@ -11,6 +11,7 @@ public:
     FileManager();
     QList<Student*> readIds();
     void changeStatus(QString name);
+    void addUser(QString name, QString id, QString barcodeNum);
 private:
     QFile *ids;
 };

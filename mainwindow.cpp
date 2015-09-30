@@ -8,14 +8,11 @@ ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     connect(ui->numberEntry,SIGNAL(returnPressed()),this,SLOT(gotText()));
-    // connect(ui->actionNewUser,SIGNAL(triggered(bool)),this,SLOT(newUser()));
+    connect(ui->actionAdd_User,SIGNAL(triggered()),this,SLOT(addNewUser()));
     manager = new FileManager();
     this->students = manager->readIds();
     this->setWindowTitle("SFRT Attendance");
     this->setWindowIcon(QIcon("icon.png"));
-    
-    //code for testing because i cannot manually add users
-    //students.append(new Student("Nilay Pachauri", 22906795, 2171048));
 }
 
 MainWindow::~MainWindow()
@@ -37,7 +34,6 @@ int MainWindow::gotText()
     
     name = currStudent->getName();  //really redundant fix soon please
     QString time = (QTime::currentTime().toString());
-    //int date = (const int QDate::month());
     QString date = QDate::currentDate().toString();
     
     if (!currStudent->isSignedIn())
@@ -80,41 +76,6 @@ int MainWindow::gotText()
             stream << name << "," << time <<"," << "Sign Out," << date << "\r\n"; // this writes first line with two columns
             file.close();
         }
-        
-        //if(currStudent->getLastSignIn()->elapsed()==0 || (currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000))
-        //    {
-        //        currStudent->setCorrectSignOut(false);
-        //        ui->log->append("Signed in: " + name);
-        //        currStudent->getLastSignIn()->start();
-        //    }
-        //    else if(!currStudent->getCorrectSignIn() && currStudent->getLastSignIn()->elapsed()>57600000)//57600000 //16 hours in millesonds
-        //    {
-        //        currStudent->setCorrectSignOut(false);
-        //        ui->log->append("You did not sign-out last time, resigning-in");
-        //        ui->log->append("Signed in: " + name);
-        //        currStudent->getLastSignIn()->restart();
-        //    }
-        
-        //    else if(currStudent->getLastSignIn()->elapsed()<5400000)//5400000   //1 hour 30 minutes in seconds
-        //    {
-        //        int elapsed = currStudent->getLastSignIn()->elapsed();
-        //        int seconds = (int) (elapsed / 1000) % 60 ;
-        //        int minutes = (int) ((elapsed / (1000*60)) % 60);
-        //        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
-        //        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
-        //        currStudent->getLastSignIn()->restart();
-        //    }
-        //    else if(currStudent->getLastSignIn()->elapsed()>5400000)
-        //    {
-        //        currStudent->setCorrectSignOut(true);
-        //        int elapsed = currStudent->getLastSignIn()->elapsed();
-        //        int seconds = (int) (elapsed / 1000) % 60 ;
-        //        int minutes = (int) ((elapsed / (1000*60)) % 60);
-        //        int hours   = (int) ((elapsed / (1000*60*60)) % 24);
-        //        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));
-        //        currStudent->getLastSignIn()->restart();
-        //        this->manager->changeStatus(name);
-        //    }
     }
     return 1;
     
@@ -165,4 +126,11 @@ Student *MainWindow::findStudent(QString &name) //looks through array to find th
     }
     return (Student *)NULL;
 }
-
+void MainWindow::addNewUser()
+{
+    QString name = QInputDialog::getText(this, tr("What is your name"),tr("Name:"), QLineEdit::Normal,"John Doe");
+    QString id = QInputDialog::getText(this, tr("What is your id #"),tr("Id #:"), QLineEdit::Normal,"1234");
+    QString barcode = QInputDialog::getText(this, tr("Scan your barcode"),tr("Id #:"), QLineEdit::Normal,"");
+    this->manager->addUser(name,id,barcode);
+    this->students.append(new Student(name,barcode.toInt(),id.toInt()));
+}

@@ -27,7 +27,8 @@ private:
     FileManager *manager;
     Student *findStudent(int id);
     Student *findStudent(QString &name);
-    public slots:
+public slots:
+    void addNewUser();
     int gotText();
 };
 
