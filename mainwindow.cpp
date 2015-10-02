@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 MainWindow::MainWindow(QWidget *parent) :
-QMainWindow(parent),
+QMainWindow(parent,Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint),
 ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
