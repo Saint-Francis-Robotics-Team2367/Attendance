@@ -131,6 +131,12 @@ void MainWindow::addNewUser()
     QString name = QInputDialog::getText(this, tr("What is your name"),tr("Enter name:"), QLineEdit::Normal,"John Doe");
     QString id = QInputDialog::getText(this, tr("ID #"),tr("Enter school ID #:"), QLineEdit::Normal,"1234");
     QString barcode = QInputDialog::getText(this, tr("Barcode"),tr("Scan your barcode:"), QLineEdit::Normal,"");
-    this->manager->addUser(name,id,barcode);
-    this->students.append(new Student(name,barcode.toInt(),id.toInt()));
+    if (name.isEmpty() || id.isEmpty() || barcode.isEmpty()) {
+        qDebug() << "Cancel was probably pressed at some point. Please try signing in again";
+    } else if (name == "John Doe" || id == "1234") {
+        qDebug() << "An actual name and/or id wasn't entered. \"OK\" was pressed with the default value not changed";
+    } else {
+        this->manager->addUser(name,id,barcode);
+        this->students.append(new Student(name,barcode.toInt(),id.toInt()));
+    }
 }
