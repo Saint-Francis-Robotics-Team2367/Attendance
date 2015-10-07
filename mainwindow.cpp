@@ -21,18 +21,14 @@ MainWindow::~MainWindow()
 }
 int MainWindow::gotText()
 {
-    QString name = this->findName(ui->numberEntry->text().toInt());
-    
+    Student *currStudent = findStudentFromId(ui->numberEntry->text()); //gets the student object
     ui->numberEntry->setText("");
-    if(name==NULL)
+    if(currStudent==NULL)
     {
         ui->log->append("Invalid ID: Please try again");
         return 0;
-        
+
     }
-    Student *currStudent = findStudent(name); //gets the student object
-    
-    name = currStudent->getName();  //really redundant fix soon please
     QString time = (QTime::currentTime().toString());
     QString date = QDate::currentDate().toString();
     
@@ -40,7 +36,7 @@ int MainWindow::gotText()
     {   //if the user is not signed in
         
         currStudent->setSignedIn(true);   //sign him in
-        ui->log->append("Signed in: " + name);
+        ui->log->append("Signed in: " + currStudent->getName());
         currStudent->getLastSignIn()->start();  //and start the timer for how long he is there
         
         QFile file("data.csv");
@@ -51,7 +47,7 @@ int MainWindow::gotText()
         if (file.open(QFile::WriteOnly|QFile::Append))
         {
             QTextStream stream(&file);
-            stream << name << "," << time <<"," << "Sign In," << date << "\r\n"; // this writes first line with two columns
+            stream << currStudent->getName() << "," << time <<"," << "Sign In," << date << "\r\n"; // this writes first line with two columns
             file.close();
         } else {
             ui->log->append("This shit don't work");
@@ -65,7 +61,7 @@ int MainWindow::gotText()
         int seconds = (int) (elapsed / 1000) % 60 ;
         int minutes = (int) ((elapsed / (1000*60)) % 60);
         int hours   = (int) ((elapsed / (1000*60*60)) % 24);
-        ui->log->append("Signed out: " + name + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
+        ui->log->append("Signed out: " + currStudent->getName() + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
         currStudent->getLastSignIn()->restart();    //and restart the timer?
         
         
@@ -73,7 +69,7 @@ int MainWindow::gotText()
         if (file.open(QFile::WriteOnly|QFile::Append))
         {
             QTextStream stream(&file);
-            stream << name << "," << time <<"," << "Sign Out," << date << "\r\n"; // this writes first line with two columns
+            stream << currStudent->getName() << "," << time <<"," << "Sign Out," << date << "\r\n"; // this writes first line with two columns
             file.close();
         }
     }
@@ -81,7 +77,7 @@ int MainWindow::gotText()
     
 }
 
-QString MainWindow::findName(int id)
+QString MainWindow::findName(QString id)
 {
     for(int i = 0;i<this->students.size();i++)
     {
@@ -92,7 +88,7 @@ QString MainWindow::findName(int id)
     }
     return NULL;
 }
-int MainWindow::findId(QString &name)
+QString MainWindow::findId(QString &name)
 {
     for(int i = 0;i<this->students.size();i++)
     {
@@ -101,10 +97,10 @@ int MainWindow::findId(QString &name)
             return this->students.at(i)->getStudentID();
         }
     }
-    return -1;
+    return NULL;
 }
 
-Student *MainWindow::findStudent(int id)
+Student *MainWindow::findStudentFromId(QString id)
 {
     for(int i = 0;i<this->students.size();i++)
     {
@@ -115,7 +111,7 @@ Student *MainWindow::findStudent(int id)
     }
     return (Student *)NULL;
 }
-Student *MainWindow::findStudent(QString &name) //looks through array to find the student and returns the Student object
+Student *MainWindow::findStudentFromName(QString &name) //looks through array to find the student and returns the Student object
 {
     for(int i = 0;i<this->students.size();i++)
     {
@@ -137,6 +133,6 @@ void MainWindow::addNewUser()
         qDebug() << "An actual name and/or id wasn't entered. \"OK\" was pressed with the default value not changed";
     } else {
         this->manager->addUser(name,id,barcode);
-        this->students.append(new Student(name,barcode.toInt(),id.toInt()));
+        this->students.append(new Student(name,barcode,id));
     }
 }

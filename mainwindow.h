@@ -22,11 +22,11 @@ public:
 private:
     Ui::MainWindow *ui;
     QList<Student*> students;
-    QString findName(int id);
-    int findId(QString &name);
+    QString findName(QString id);
+    QString findId(QString &name);
     FileManager *manager;
-    Student *findStudent(int id);
-    Student *findStudent(QString &name);
+    Student *findStudentFromId(QString id);
+    Student *findStudentFromName(QString &name);
 public slots:
     void addNewUser();
     int gotText();

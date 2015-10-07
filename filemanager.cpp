@@ -29,7 +29,7 @@ QList<Student*> FileManager::readIds()
         qDebug() << barcodeID;
         QString name = line.section(';',2);
         qDebug() << name;
-        students.append(new Student(name,barcodeID.toInt(), studentID.toInt()));
+        students.append(new Student(name,barcodeID, studentID));
     }
     in.flush();
     ids->close();

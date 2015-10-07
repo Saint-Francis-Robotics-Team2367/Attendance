@@ -1,6 +1,6 @@
 #include "student.h"
 
-Student::Student(QString name, int barcodeID, int studentID)
+Student::Student(QString name, QString barcodeID, QString studentID)
 {
     this->name = name;
     this->barcodeID = barcodeID;
@@ -8,7 +8,7 @@ Student::Student(QString name, int barcodeID, int studentID)
 
     this->isSignIn = false;    //a new Student is not signed in when he is added
 }
-int Student::getStudentID() const
+QString Student::getStudentID() const
 {
     return studentID;
 }
@@ -42,7 +42,7 @@ void Student::setSignedIn(bool value)
 }
 
 
-int Student::getBarcodeID() const
+QString Student::getBarcodeID() const
 {
     return barcodeID;
 }

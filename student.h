@@ -5,9 +5,9 @@
 class Student
 {
 public:
-    Student(QString name, int barcodeID, int studentID);
+    Student(QString name, QString barcodeID, QString studentID);
 
-    int getStudentID() const;
+    QString getStudentID() const;
     void setStudentID(int value);
 
 
@@ -20,12 +20,12 @@ public:
     bool isSignedIn() const;
     void setSignedIn(bool value);
 
-    int getBarcodeID() const;
+    QString getBarcodeID() const;
     void setBarcodeID(int value);
 
 private:
-    int studentID;
-    int barcodeID;
+    QString studentID;
+    QString barcodeID;
     QString name;
     QTime lastSignIn;
     bool isSignIn;
