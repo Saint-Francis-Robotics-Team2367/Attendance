@@ -38,6 +38,9 @@ public:
     QMenuBar *menuBar;
     QMenu *menuFile;
 
+    QTextBrowser *textBrowserErrors;
+    QLabel *labelErrors;
+
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
@@ -55,18 +58,30 @@ public:
         log = new QTextBrowser(centralWidget);
         log->setObjectName(QStringLiteral("log"));
         log->setGeometry(QRect(30, 70, 511, 191));
+        textBrowserErrors = new QTextBrowser(centralWidget);
+        textBrowserErrors->setObjectName(QStringLiteral("textBrowserErrors"));
+        textBrowserErrors->setGeometry(QRect(30, 330, 511, 61));
         QFont font;
         font.setFamily(QStringLiteral("Times New Roman"));
         font.setPointSize(10);
         log->setFont(font);
+        textBrowserErrors->setFont(font);
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 20, 551, 21));
+        labelErrors = new QLabel(centralWidget);
+        labelErrors->setObjectName(QStringLiteral("labelErrors"));
+        labelErrors->setGeometry(40, 310, 59, 16);
         QFont font1;
         font1.setFamily(QStringLiteral("Times New Roman"));
         font1.setPointSize(24);
         label->setFont(font1);
         label->setAlignment(Qt::AlignCenter);
+        QFont font2;
+        font2.setFamily(QStringLiteral("Times New Roman"));
+        font2.setPointSize(16);
+        labelErrors->setFont(font2);
+        labelErrors->setAlignment(Qt::AlignCenter);
         MainWindow->setCentralWidget(centralWidget);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -93,6 +108,7 @@ public:
         actionNewUser->setText(QApplication::translate("MainWindow", "Add New User", 0));
         actionAdd_User->setText(QApplication::translate("MainWindow", "Add User", 0));
         label->setText(QApplication::translate("MainWindow", "Attendance", 0));
+        labelErrors->setText(QApplication::translate("MainWindow", "Errors", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
     } // retranslateUi
 
