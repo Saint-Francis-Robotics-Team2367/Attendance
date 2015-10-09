@@ -30,6 +30,7 @@ private:
 public slots:
     void addNewUser();
     int gotText();
+    bool checkExistingUser(QString name);
 };
 
 #endif // MAINWINDOW_H

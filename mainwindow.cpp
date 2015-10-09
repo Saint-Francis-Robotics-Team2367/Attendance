@@ -91,7 +91,7 @@ int MainWindow::gotText()
             if (currStudent->getStatus() == true)   {
                 rawText.append(line.section(';',0,2) + ";Sign In");
             }   else    {
-                rawText.append(line.section(';',0,2) + "Sign Out");
+                rawText.append(line.section(';',0,2) + ";Sign Out");
             }
         }   else    {
             rawText.append(line);
@@ -170,8 +170,18 @@ void MainWindow::addNewUser()
         qDebug() << "Cancel was probably pressed at some point. Please try signing in again";
     } else if (name == "John Doe" || id == "1234") {
         qDebug() << "An actual name and/or id wasn't entered. \"OK\" was pressed with the default value not changed";
+    }   else if (checkExistingUser(name))   {
+        qDebug() << "You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to Daniel Grau or Sameer Vijay";
     } else {
         this->manager->addUser(name,id,barcode);
         this->students.append(new Student(name,barcode,id,"Sign Out"));
     }
+}
+
+bool MainWindow::checkExistingUser(QString name)    {
+    bool cont = false;
+    for (int i = 0; i < this->students.size(); i++) {
+        if (name == this->students.at(i)->getName()) cont = true;
+    }
+    return cont;
 }
