@@ -1,12 +1,13 @@
 #include "student.h"
 
-Student::Student(QString name, QString barcodeID, QString studentID)
+Student::Student(QString name, QString barcodeID, QString studentID, QString status)
 {
     this->name = name;
     this->barcodeID = barcodeID;
     this->studentID = studentID;
 
-    this->isSignIn = false;    //a new Student is not signed in when he is added
+    if (status == "Sign Out") this->status = false;
+    else this->status = true;
 }
 QString Student::getStudentID() const
 {
@@ -31,14 +32,14 @@ QTime *Student::getLastSignIn()
 {
     return &lastSignIn;
 }
-bool Student::isSignedIn() const
+bool Student::getStatus() const
 {
-    return isSignIn;
+    return status;
 }
 
-void Student::setSignedIn(bool value)
+void Student::setStatus(bool value)
 {
-    isSignIn = value;
+    status = value;
 }
 
 

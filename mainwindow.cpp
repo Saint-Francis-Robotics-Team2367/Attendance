@@ -32,16 +32,19 @@ int MainWindow::gotText()
     QString time = (QTime::currentTime().toString());
     QString date = QDate::currentDate().toString();
     
-    if (!currStudent->isSignedIn())
+    if (!currStudent->getStatus())
     {   //if the user is not signed in
         
-        currStudent->setSignedIn(true);   //sign him in
+        currStudent->setStatus(true);   //sign him in
         ui->log->append("Signed in: " + currStudent->getName());
         currStudent->getLastSignIn()->start();  //and start the timer for how long he is there
-        
+
+
+
+
         QFile file("data.csv");
         
-        QFileInfo fileInfo("data.csv");
+        //QFileInfo fileInfo("data.csv");
         //ui->log->append(fileInfo.absoluteFilePath());
         
         if (file.open(QFile::WriteOnly|QFile::Append))
@@ -50,13 +53,13 @@ int MainWindow::gotText()
             stream << currStudent->getName() << "," << time <<"," << "Sign In," << date << "\r\n"; // this writes first line with two columns
             file.close();
         } else {
-            ui->log->append("This shit don't work");
+            ui->log->append("FREAKING A");
         }
         
     }
-    else if (currStudent->isSignedIn()) {   //if the user is signed in
+    else if (currStudent->getStatus()) {   //if the user is signed in
         
-        currStudent->setSignedIn(false);  //sign him out
+        currStudent->setStatus(false);  //sign him out
         int elapsed = currStudent->getLastSignIn()->elapsed();  //magically get the numbers for how long he has been there
         int seconds = (int) (elapsed / 1000) % 60 ;
         int minutes = (int) ((elapsed / (1000*60)) % 60);
@@ -73,6 +76,42 @@ int MainWindow::gotText()
             file.close();
         }
     }
+
+    QFile ids("users.ids");
+    QStringList rawText;
+    if(!ids.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "Can't open file";
+    }
+    QTextStream in(&ids);
+    while(!in.atEnd())
+    {
+        QString line = in.readLine();
+        if (currStudent->getName() == line.section(';',2,2))    {
+            if (currStudent->getStatus() == true)   {
+                rawText.append(line.section(';',0,2) + ";Sign In");
+            }   else    {
+                rawText.append(line.section(';',0,2) + "Sign Out");
+            }
+        }   else    {
+            rawText.append(line);
+        }
+    }
+    in.flush();
+    ids.close();
+    if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+    qDebug() << "Can't open file";
+    }
+
+    QTextStream out(&ids);
+    for(int i = 0;i<rawText.size();i++)
+    {
+    out << rawText.at(i) +"\n";
+    }
+    out.flush();
+    ids.close();
+
     return 1;
     
 }
@@ -133,6 +172,6 @@ void MainWindow::addNewUser()
         qDebug() << "An actual name and/or id wasn't entered. \"OK\" was pressed with the default value not changed";
     } else {
         this->manager->addUser(name,id,barcode);
-        this->students.append(new Student(name,barcode,id));
+        this->students.append(new Student(name,barcode,id,"Sign Out"));
     }
 }

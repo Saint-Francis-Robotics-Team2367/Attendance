@@ -27,9 +27,10 @@ QList<Student*> FileManager::readIds()
         qDebug() << studentID;
         QString barcodeID = line.section(';',1,1);
         qDebug() << barcodeID;
-        QString name = line.section(';',2);
+        QString name = line.section(';',2,2);
         qDebug() << name;
-        students.append(new Student(name,barcodeID, studentID));
+        QString status = line.section(';',3);
+        students.append(new Student(name,barcodeID, studentID,status));
     }
     in.flush();
     ids->close();
@@ -52,7 +53,7 @@ void FileManager::addUser(QString name, QString id, QString barcodeNum)
     }
     in.flush();
     ids.close();
-    rawText.append(id +";" + barcodeNum + ";"+name);
+    rawText.append(id +";" + barcodeNum + ";"+name + ";" + "Sign Out");     //in the add user put their id, then barcode, then name and then status
     if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))
     {
     qDebug() << "Can't open file";
