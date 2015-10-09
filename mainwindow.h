@@ -6,6 +6,8 @@
 #include <filemanager.h>
 #include <student.h>
 #include <QInputDialog>
+#include <QMessageBox>
+#include <QSound>
 
 namespace Ui {
     class MainWindow;

@@ -25,13 +25,15 @@ int MainWindow::gotText()
     ui->numberEntry->setText("");
     if(currStudent==NULL)
     {
+        QSound::play("error.wav");
         ui->textBrowserErrors->append("Invalid ID: Please try again");
         return 0;
 
     }
     QString time = (QTime::currentTime().toString());
     QString date = QDate::currentDate().toString();
-    
+    if(currStudent->getName()=="Daniel Grau")
+        QSound::play("Yeah.wav");
     if (!currStudent->getStatus())
     {   //if the user is not signed in
         
@@ -168,11 +170,24 @@ void MainWindow::addNewUser()
     QString barcode = QInputDialog::getText(this, tr("Barcode"),tr("Scan your barcode:"), QLineEdit::Normal,"");
     if (name.isEmpty() || id.isEmpty() || barcode.isEmpty()) {
         ui->textBrowserErrors->append("Cancel was probably pressed at some point. Please try signing in again");
-    } else if (name == "John Doe" || id == "1234") {
+        QSound::play("error.wav");
+    }
+    else if (name == "John Doe" || id == "1234")
+    {
         ui->textBrowserErrors->append("An actual name and/or id wasn't entered. \"OK\" was pressed with the default value not changed");
-    }   else if (checkExistingUser(name))   {
+        QSound::play("error.wav");
+    }
+    else if (checkExistingUser(name))
+    {
+        QSound::play("error.wav");
+        QMessageBox msgBox;
+        msgBox.setText("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to Daniel Grau or Sameer Vijay");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.exec();
         ui->textBrowserErrors->append("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to Daniel Grau or Sameer Vijay");
-    } else {
+    }
+    else
+    {
         this->manager->addUser(name,id,barcode);
         this->students.append(new Student(name,barcode,id,"Sign Out"));
     }

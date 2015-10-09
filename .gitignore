@@ -28,3 +28,6 @@ build-Attendance-Desktop_Qt_5_4_2_clang_64bit-Debug/Attendance.app/Contents/MacO
 build-Attendance-Desktop_Qt_5_4_2_clang_64bit-Debug/Attendance.app/Contents/Info.plist
 
 .qmake.stash
+*.user
+Attendance.pro
+*.pro
