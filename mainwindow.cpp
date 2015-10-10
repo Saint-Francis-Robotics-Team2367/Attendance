@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <qtimer.h>
 #include <qdatetime.h>
+#include <qdebug.h>
 
 MainWindow::MainWindow(QWidget *parent) :
 QMainWindow(parent,Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint),
@@ -11,11 +12,9 @@ ui(new Ui::MainWindow)
     ui->setupUi(this);
     connect(ui->numberEntry,SIGNAL(returnPressed()),this,SLOT(gotText()));
     connect(ui->actionAdd_User,SIGNAL(triggered()),this,SLOT(addNewUser()));
-    QTimer *timer = new QTimer(this);   //make a timer which will call a method
-//    timer->setSingleShot(true);
-//    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(callOther()));    //connecting the timer with the method
-    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(signAllOut()));    //connecting the timer with the method
-    timer->start(1000); //setting the timer to call the method every 1000 milliseconds or 1 second
+//    QTimer *timer = new QTimer(this);   //make a timer which will call a method
+//    connect(timer, SIGNAL(timeout()), this, SLOT(signAllOut()));    //connecting the timer with the method
+//    timer->start(1000); //setting the timer to call the method every 1000 milliseconds or 1 second
     manager = new FileManager();
     this->students = manager->readIds();
     this->setWindowTitle("SFRT Attendance");
@@ -48,100 +47,100 @@ MainWindow::~MainWindow()
  * for Weekdays.
  */
 
-void MainWindow::signAllOut()   {
-    if (QDate::currentDate().dayOfWeek() == 7)    { //3 A.M. on Sunday, the day after Saturday meetings
-        if (QTime::currentTime() == QTime(3,0,0))   {
-            QFile ids("users.ids"); //open the users file because the status is saved there
-            QString text;   //make a string which will be used to rewrite the file
+//void MainWindow::signAllOut()   {
+//    if (QDate::currentDate().dayOfWeek() == 7)    { //3 A.M. on Sunday, the day after Saturday meetings
+//        if (QTime::currentTime() == QTime(3,0,0))   {
+//            QFile ids("users.ids"); //open the users file because the status is saved there
+//            QString text;   //make a string which will be used to rewrite the file
 
-            if (ids.open(QFile::ReadOnly|QFile::Text))   {  //only reading from the file right now
-                qDebug() << "Error when reading file";
-            }
+//            if (ids.open(QFile::ReadOnly|QFile::Text))   {  //only reading from the file right now
+//                qDebug() << "Error when reading file";
+//            }
 
-            QTextStream in(&ids);
-            while(!in.atEnd())  {   //keep reading the file until we get to the end
-                QString line = in.readLine();
-                if (line.section(';',3) == "Sign In")    {  //if the user is signed in
-                    text += line.section(';',0,2) + ";Sign Out\n";  //sign them out and append that to the text which will replace the file
-                    for (Student* stud : this->students)    {   //also go through all the students and if the name matches, change their status too
-                        if (stud->getName() == line.section(';',2,2))   {
-                            stud->setStatus(false);
-                        }
-                    }
-                } else  {   //otherwise just carry on and append
-                    text += line + "\n";
-                }
-            }
+//            QTextStream in(&ids);
+//            while(!in.atEnd())  {   //keep reading the file until we get to the end
+//                QString line = in.readLine();
+//                if (line.section(';',3) == "Sign In")    {  //if the user is signed in
+//                    text += line.section(';',0,2) + ";Sign Out\n";  //sign them out and append that to the text which will replace the file
+//                    foreach (Student* stud, this->students)    {   //also go through all the students and if the name matches, change their status too
+//                        if (stud->getName() == line.section(';',2,2))   {
+//                            stud->setStatus(false);
+//                        }
+//                    }
+//                } else  {   //otherwise just carry on and append
+//                    text += line + "\n";
+//                }
+//            }
 
-            in.flush();
-            ids.close();    //closing so no glitches occur
-
-
-            if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))   {  //now writing to the file
-                qDebug() << "No File";
-            }
+//            in.flush();
+//            ids.close();    //closing so no glitches occur
 
 
-            QTextStream out(&ids);
-            out << text;    //output the text which we collected and changed above
-
-            out.flush();
-            ids.close();
-        }
-    } else if (QDate::currentDate().dayOfWeek() != 6)   {   //7 P.M.on all Weekdays
-
-        /*NOTE
-         *
-         * Since doyOfWeek == 7 is coded for above,
-         * one does not need to include that as it
-         * will only move to this statement if the
-         * previous condition is not satisfied. On
-         * that note, saturdays do not have a forced
-         * sign out as it is on the sunday 3 A.M.;
-         * hence, for every day but saturday this
-         * condition will hold.
-         */
-
-        if (QTime::currentTime() == QTime(19,0,0))   {
-            QFile ids("users.ids"); //open the users file because the status is saved there
-            QString text;   //make a string which will be used to rewrite the file
-
-            if (ids.open(QFile::ReadOnly|QFile::Text))   {  //only reading from the file right now
-                qDebug() << "Error when reading file";
-            }
-
-            QTextStream in(&ids);
-            while(!in.atEnd())  {   //keep reading the file until we get to the end
-                QString line = in.readLine();
-                if (line.section(';',3) == "Sign In")    {  //if the user is signed in
-                    text += line.section(';',0,2) + ";Sign Out\n";  //sign them out and append that to the text which will replace the file
-                    for (Student* stud : this->students)    {   //also go through all the students and if the name matches, change their status too
-                        if (stud->getName() == line.section(';',2,2))   {
-                            stud->setStatus(false);
-                        }
-                    }
-                } else  {   //otherwise just carry on and append
-                    text += line + "\n";
-                }
-            }
-
-            in.flush();
-            ids.close();    //closing so no glitches occur
+//            if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))   {  //now writing to the file
+//                qDebug() << "No File";
+//            }
 
 
-            if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))   {  //now writing to the file
-                qDebug() << "No File";
-            }
+//            QTextStream out(&ids);
+//            out << text;    //output the text which we collected and changed above
+
+//            out.flush();
+//            ids.close();
+//        }
+//    } else if (QDate::currentDate().dayOfWeek() != 6)   {   //7 P.M.on all Weekdays
+
+//        /*NOTE
+//         *
+//         * Since doyOfWeek == 7 is coded for above,
+//         * one does not need to include that as it
+//         * will only move to this statement if the
+//         * previous condition is not satisfied. On
+//         * that note, saturdays do not have a forced
+//         * sign out as it is on the sunday 3 A.M.;
+//         * hence, for every day but saturday this
+//         * condition will hold.
+//         */
+
+//        if (QTime::currentTime() == QTime(19,0,0))   {
+//            QFile ids("users.ids"); //open the users file because the status is saved there
+//            QString text;   //make a string which will be used to rewrite the file
+
+//            if (ids.open(QFile::ReadOnly|QFile::Text))   {  //only reading from the file right now
+//                qDebug() << "Error when reading file";
+//            }
+
+//            QTextStream in(&ids);
+//            while(!in.atEnd())  {   //keep reading the file until we get to the end
+//                QString line = in.readLine();
+//                if (line.section(';',3) == "Sign In")    {  //if the user is signed in
+//                    text += line.section(';',0,2) + ";Sign Out\n";  //sign them out and append that to the text which will replace the file
+//                    foreach (Student* stud, this->students)    {   //also go through all the students and if the name matches, change their status too
+//                        if (stud->getName() == line.section(';',2,2))   {
+//                            stud->setStatus(false);
+//                        }
+//                    }
+//                } else  {   //otherwise just carry on and append
+//                    text += line + "\n";
+//                }
+//            }
+
+//            in.flush();
+//            ids.close();    //closing so no glitches occur
 
 
-            QTextStream out(&ids);
-            out << text;    //output the text which we collected and changed above
+//            if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))   {  //now writing to the file
+//                qDebug() << "No File";
+//            }
 
-            out.flush();
-            ids.close();
-        }
-    }
-}
+
+//            QTextStream out(&ids);
+//            out << text;    //output the text which we collected and changed above
+
+//            out.flush();
+//            ids.close();
+//        }
+//    }
+//}
 
 int MainWindow::gotText()
 {
@@ -181,22 +180,38 @@ int MainWindow::gotText()
         
     }
     else if (currStudent->getStatus()) {   //if the user is signed in
-        
+
         currStudent->setStatus(false);  //sign him out
         int elapsed = currStudent->getLastSignIn()->elapsed();  //magically get the numbers for how long he has been there
         int seconds = (int) (elapsed / 1000) % 60 ;
         int minutes = (int) ((elapsed / (1000*60)) % 60);
         int hours   = (int) ((elapsed / (1000*60*60)) % 24);
-        ui->log->append("Signed out: " + currStudent->getName() + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
-        currStudent->getLastSignIn()->restart();    //and restart the timer?
+        if (hours > 16) {
+            ui->log->append("Signed out: " + currStudent->getName() + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
+            currStudent->getLastSignIn()->restart();    //and restart the timer?
         
         
-        QFile file("data.csv");
-        if (file.open(QFile::WriteOnly|QFile::Append))
-        {
-            QTextStream stream(&file);
-            stream << currStudent->getName() << "," << time <<"," << "Sign Out," << date << "\r\n"; // this writes first line with two columns
-            file.close();
+            QFile file("data.csv");
+            if (file.open(QFile::WriteOnly|QFile::Append))
+            {
+                QTextStream stream(&file);
+                stream << currStudent->getName() << ",1:00:00," << "Sign Out," << date << "\r\n"; // this writes first line with two columns
+                file.close();
+            }
+            ui->numberEntry->setText(currStudent->getName());
+            gotText();
+        }  else  {
+            ui->log->append("Signed out: " + currStudent->getName() + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
+            currStudent->getLastSignIn()->restart();    //and restart the timer?
+
+
+            QFile file("data.csv");
+            if (file.open(QFile::WriteOnly|QFile::Append))
+            {
+                QTextStream stream(&file);
+                stream << currStudent->getName() << "," << time <<"," << "Sign Out," << date << "\r\n"; // this writes first line with two columns
+                file.close();
+            }
         }
     }
 

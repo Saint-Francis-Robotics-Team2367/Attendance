@@ -37,7 +37,7 @@ private:
     Student *findStudentFromName(QString &name);
 public slots:
 //    void callOther();
-    void signAllOut();
+//    void signAllOut();
     void addNewUser();
     int gotText();
     bool checkExistingUser(QString name);
