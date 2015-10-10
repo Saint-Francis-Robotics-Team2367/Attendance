@@ -198,7 +198,7 @@ int MainWindow::gotText()
                 stream << currStudent->getName() << ",1:00:00," << "Sign Out," << date << "\r\n"; // this writes first line with two columns
                 file.close();
             }
-            ui->numberEntry->setText(currStudent->getName());
+            ui->numberEntry->setText(currStudent->getStudentID());
             gotText();
         }  else  {
             ui->log->append("Signed out: " + currStudent->getName() + " || Duration: " +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
