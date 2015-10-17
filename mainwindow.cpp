@@ -248,7 +248,7 @@ int MainWindow::gotText()
                 secondsString = QString::number(seconds);
             }
 
-            ui->log->append("Signed out: " + currStudent->getName() + " || Duration:" +  hoursString + ":" + minutesString + ":" +  secondsString);  //display it to him
+            ui->log->append("Signed out: " + currStudent->getName() + " || Duration: " +  hoursString + ":" + minutesString + ":" +  secondsString);  //display it to him
 
             currStudent->setLastTimeSignIn();    //and restart the timer
 
