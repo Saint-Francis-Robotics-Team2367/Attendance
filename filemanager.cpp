@@ -56,13 +56,13 @@ void FileManager::addUser(QString name, QString id, QString barcodeNum)
     rawText.append(id +";" + barcodeNum + ";"+name + ";" + "Sign Out");     //in the add user put their id, then barcode, then name and then status
     if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))
     {
-    qDebug() << "Can't open file";
+        qDebug() << "Can't open file";
     }
 
     QTextStream out(&ids);
     for(int i = 0;i<rawText.size();i++)
     {
-    out << rawText.at(i) +"\n";
+        out << rawText.at(i) +"\n";
     }
     out.flush();
     ids.close();

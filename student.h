@@ -15,7 +15,8 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
-    QTime *getLastSignIn();
+    QTime getLastTimeSignIn();
+    void setLastTimeSignIn();
 
     bool getStatus() const;
     void setStatus(bool value);
@@ -23,11 +24,15 @@ public:
     QString getBarcodeID() const;
     void setBarcodeID(int value);
 
+    QDate getLastDateSignIn() const;
+    void setLastDateSignIn();
+
 private:
     QString studentID;
     QString barcodeID;
     QString name;
-    QTime lastSignIn;
+    QTime lastTimeSignIn;
+    QDate lastDateSignIn;
     bool status;
 
 };
