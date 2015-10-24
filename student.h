@@ -5,7 +5,7 @@
 class Student
 {
 public:
-    Student(QString name, QString barcodeID, QString studentID, QString status);
+    Student(QString name, QString barcodeID, QString studentID, QString status, QString time, QString date);
 
     QString getStudentID() const;
     void setStudentID(int value);

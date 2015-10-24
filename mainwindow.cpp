@@ -228,7 +228,27 @@ int MainWindow::gotText()
         }
 
         else  {
-            ui->log->append("Signed out: " + currStudent->getName() +  QString::number(hours)+ ":" + QString::number(minutes) + ":" +  QString::number(seconds));  //display it to him
+            QString hoursString, minutesString, secondsString;
+
+            if (QString::number(hours).length() == 1)   {
+                hoursString = "0" + QString::number(hours);
+            } else {
+                hoursString = QString::number(hours);
+            }
+
+            if (QString::number(minutes).length() == 1)   {
+                minutesString = "0" + QString::number(minutes);
+            } else {
+                minutesString = QString::number(minutes);
+            }
+
+            if (QString::number(seconds).length() == 1)   {
+                secondsString = "0" + QString::number(seconds);
+            } else {
+                secondsString = QString::number(seconds);
+            }
+
+            ui->log->append("Signed out: " + currStudent->getName() + " || Duration:" +  hoursString + ":" + minutesString + ":" +  secondsString);  //display it to him
 
             currStudent->setLastTimeSignIn();    //and restart the timer
 
@@ -254,31 +274,38 @@ int MainWindow::gotText()
         qDebug() << "Can't open file";
     }
     QTextStream in(&ids);
-    while(!in.atEnd())
-    {
+    while(!in.atEnd())  {
         QString line = in.readLine();
+
         if (currStudent->getName() == line.section(';',2,2))    {
+
             if (currStudent->getStatus() == true)   {
-                rawText.append(line.section(';',0,2) + ";Sign In");
+                rawText.append(line.section(';',0,2) + ";Sign In;" + currStudent->getLastTimeSignIn().toString() + ";" + currStudent->getLastDateSignIn().toString());
             }   else    {
-                rawText.append(line.section(';',0,2) + ";Sign Out");
+                rawText.append(line.section(';',0,2) + ";Sign Out;" + currStudent->getLastTimeSignIn().toString() + ";" + currStudent->getLastDateSignIn().toString());
             }
-        }   else    {
+
+        }
+
+        else    {
             rawText.append(line);
         }
+
     }
+
     in.flush();
     ids.close();
-    if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))
-    {
-    qDebug() << "Can't open file";
+
+    if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))   {
+        qDebug() << "Can't open file";
     }
 
     QTextStream out(&ids);
-    for(int i = 0;i<rawText.size();i++)
-    {
-    out << rawText.at(i) +"\n";
+
+    for(int i = 0;i<rawText.size();i++) {
+        out << rawText.at(i) +"\n";
     }
+
     out.flush();
     ids.close();
 
@@ -336,17 +363,18 @@ void MainWindow::addNewUser()
     QString name = QInputDialog::getText(this, tr("What is your name"),tr("Enter name:"), QLineEdit::Normal,"John Doe");
     QString id = QInputDialog::getText(this, tr("ID #"),tr("Enter school ID #:"), QLineEdit::Normal,"1234");
     QString barcode = QInputDialog::getText(this, tr("Barcode"),tr("Scan your barcode:"), QLineEdit::Normal,"");
+
     if (name.isEmpty() || id.isEmpty() || barcode.isEmpty()) {
         ui->log->append("Cancel was probably pressed at some point. Please try signing in again");
         QSound::play("error.wav");
     }
-    else if (name == "John Doe" || id == "1234")
-    {
+
+    else if (name == "John Doe" || id == "1234")    {
         ui->log->append("An actual name and/or id wasn't entered. \"OK\" was pressed with the default value not changed");
         QSound::play("error.wav");
     }
-    else if (checkExistingUser(name))
-    {
+
+    else if (checkExistingUser(name))   {
         QSound::play("error.wav");
         QMessageBox msgBox;
         msgBox.setText("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to Daniel Grau or Sameer Vijay");
@@ -354,11 +382,12 @@ void MainWindow::addNewUser()
         msgBox.exec();
         ui->log->append("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to Daniel Grau or Sameer Vijay");
     }
-    else
-    {
+
+    else    {
         this->manager->addUser(name,id,barcode);
-        this->students.append(new Student(name,barcode,id,"Sign Out"));
+        this->students.append(new Student(name, barcode, id, "Sign Out", QTime::currentTime().toString(), QDate::currentDate().toString()));
     }
+
 }
 
 bool MainWindow::checkExistingUser(QString name)    {

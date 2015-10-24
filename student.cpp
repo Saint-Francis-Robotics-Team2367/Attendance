@@ -1,6 +1,6 @@
 #include "student.h"
 
-Student::Student(QString name, QString barcodeID, QString studentID, QString status)
+Student::Student(QString name, QString barcodeID, QString studentID, QString status, QString time, QString date)
 {
     this->name = name;
     this->barcodeID = barcodeID;
@@ -9,8 +9,8 @@ Student::Student(QString name, QString barcodeID, QString studentID, QString sta
     if (status == "Sign Out") this->status = false;
     else this->status = true;
 
-    this->lastDateSignIn = QDate();
-    this->lastTimeSignIn = QTime();
+    this->lastTimeSignIn = QTime::fromString(time);
+    this->lastDateSignIn = QDate::fromString(date);
 }
 
 QString Student::getStudentID() const
