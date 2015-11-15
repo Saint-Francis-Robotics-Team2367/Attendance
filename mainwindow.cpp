@@ -26,122 +26,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//void MainWindow::callOther()    {
-//    QTimer *autoTimer = new QTimer(this);
-//    autoTimer->setInterval(5*1000);
-//    autoTimer->setSingleShot(false);
-//    connect(autoTimer, SIGNAL(timeout()), this, SLOT(signAllOut()));
-//    autoTimer->start();
-//}
-
-/*signAllOut
- *
- * If the user forgets to sign out
- * then they will automatically be signed out
- * this method is called every second so as to
- * check for when the time limit is reached,
- * and when it reaches that limit, everyone is signed out.
- *
- * This time limit is something for which it would be unreasonable
- * for someone to stay until i.e. 3 A.M. for Saturdays and 7 P.M.
- * for Weekdays.
- */
-
-//void MainWindow::signAllOut()   {
-//    if (QDate::currentDate().dayOfWeek() == 7)    { //3 A.M. on Sunday, the day after Saturday meetings
-//        if (QTime::currentTime() == QTime(3,0,0))   {
-//            QFile ids("users.ids"); //open the users file because the status is saved there
-//            QString text;   //make a string which will be used to rewrite the file
-
-//            if (ids.open(QFile::ReadOnly|QFile::Text))   {  //only reading from the file right now
-//                qDebug() << "Error when reading file";
-//            }
-
-//            QTextStream in(&ids);
-//            while(!in.atEnd())  {   //keep reading the file until we get to the end
-//                QString line = in.readLine();
-//                if (line.section(';',3) == "Sign In")    {  //if the user is signed in
-//                    text += line.section(';',0,2) + ";Sign Out\n";  //sign them out and append that to the text which will replace the file
-//                    foreach (Student* stud, this->students)    {   //also go through all the students and if the name matches, change their status too
-//                        if (stud->getName() == line.section(';',2,2))   {
-//                            stud->setStatus(false);
-//                        }
-//                    }
-//                } else  {   //otherwise just carry on and append
-//                    text += line + "\n";
-//                }
-//            }
-
-//            in.flush();
-//            ids.close();    //closing so no glitches occur
-
-
-//            if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))   {  //now writing to the file
-//                qDebug() << "No File";
-//            }
-
-
-//            QTextStream out(&ids);
-//            out << text;    //output the text which we collected and changed above
-
-//            out.flush();
-//            ids.close();
-//        }
-//    } else if (QDate::currentDate().dayOfWeek() != 6)   {   //7 P.M.on all Weekdays
-
-//        /*NOTE
-//         *
-//         * Since doyOfWeek == 7 is coded for above,
-//         * one does not need to include that as it
-//         * will only move to this statement if the
-//         * previous condition is not satisfied. On
-//         * that note, saturdays do not have a forced
-//         * sign out as it is on the sunday 3 A.M.;
-//         * hence, for every day but saturday this
-//         * condition will hold.
-//         */
-
-//        if (QTime::currentTime() == QTime(19,0,0))   {
-//            QFile ids("users.ids"); //open the users file because the status is saved there
-//            QString text;   //make a string which will be used to rewrite the file
-
-//            if (ids.open(QFile::ReadOnly|QFile::Text))   {  //only reading from the file right now
-//                qDebug() << "Error when reading file";
-//            }
-
-//            QTextStream in(&ids);
-//            while(!in.atEnd())  {   //keep reading the file until we get to the end
-//                QString line = in.readLine();
-//                if (line.section(';',3) == "Sign In")    {  //if the user is signed in
-//                    text += line.section(';',0,2) + ";Sign Out\n";  //sign them out and append that to the text which will replace the file
-//                    foreach (Student* stud, this->students)    {   //also go through all the students and if the name matches, change their status too
-//                        if (stud->getName() == line.section(';',2,2))   {
-//                            stud->setStatus(false);
-//                        }
-//                    }
-//                } else  {   //otherwise just carry on and append
-//                    text += line + "\n";
-//                }
-//            }
-
-//            in.flush();
-//            ids.close();    //closing so no glitches occur
-
-
-//            if(!ids.open(QIODevice::WriteOnly | QIODevice::Text))   {  //now writing to the file
-//                qDebug() << "No File";
-//            }
-
-
-//            QTextStream out(&ids);
-//            out << text;    //output the text which we collected and changed above
-
-//            out.flush();
-//            ids.close();
-//        }
-//    }
-//}
-
 int MainWindow::gotText()
 {
     Student *currStudent = findStudentFromId(ui->numberEntry->text()); //gets the student object
@@ -198,8 +82,8 @@ int MainWindow::gotText()
         int seconds = elapsed % 60 ;
         int minutes = (int) ((elapsed / 60) % 60);
         int hours   = (int) ((elapsed / (60 * 60) ) % 24);
-
-        if (hours > 16) {
+        if(currStudent->getLastDateSignIn().daysTo(QDate::currentDate())>=1)
+         {
             ui->log->append("Signed out: " + currStudent->getName() + " || Duration: 0:00:00");  //display it to him
 
             ui->log->append("Next Time Remember to Sign Out");
@@ -220,7 +104,6 @@ int MainWindow::gotText()
                 }
                 file.close();
             }
-
             ui->numberEntry->setText(currStudent->getStudentID());
 
             gotText();  //call the function again to sign them in automatically
@@ -247,7 +130,6 @@ int MainWindow::gotText()
             } else {
                 secondsString = QString::number(seconds);
             }
-
             ui->log->append("Signed out: " + currStudent->getName() + " || Duration: " +  hoursString + ":" + minutesString + ":" +  secondsString);  //display it to him
 
             currStudent->setLastTimeSignIn();    //and restart the timer
