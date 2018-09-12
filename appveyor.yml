@@ -20,7 +20,7 @@ after_build:
 deploy:
   provider: GitHub
   auth_token:
-    secure: GZNa7utcPcbg7EKCpRk3xv1fWvo66qE9VsAD5a1/HTmkORbrMvDEEXfbd/JVjc6U
+    secure: n1pbFofm4mbNIO0iHz+IHJlAECAQFfWxRyjuCFS0ZNV3Ew++dn/w7gaZ7M2OwWC7
   artifact: windows
   draft: true
   prerelease: false
