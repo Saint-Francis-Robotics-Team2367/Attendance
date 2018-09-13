@@ -25,7 +25,7 @@ deploy:
   skip_cleanup: true
   file_glob: true
   api_key:
-    secure: "D3QrB1dXafrzUh5i/edU8zHTNUGMJXqAWoWJ7+8jIsIkh8B0t7D36DjfaiHwZHH4aMtJYETyETTtgDyszi35Pu4pbPYMpV+McaBjZjnnbB22+9ljCF9idj3rLZW9CYG3m92tFqJhpe7XXDbi8T6KNiXTjdHSx9A1ABrh+w6kw+qTGyiDMjU593mo1Z/F0YRBpuYyLpyTYXSvTaJ8n/ynxIO4uzsRQYF322Xp+mcTtmU6aZ2CtdpVOnBYByT0abKF+IPfCv8GAcwvIfgrj9IIRfl0Ln495UkvKFZevf9WXyB4iUfJ6g3dVAaQWfrRWeO8E0R8577WzOperHWNhQUCiAbIGa3yyqJnZ0iFotcxIkxEFHvv5hmbrDlAtFZH5ZEQa3PHlJCb4ij8SFbkQlrcBCK0fIjBdyAHTgLi1QGDQr8aTjSy0WMXrcS1PAmPTipUTwXlOPGXQhLEtf9iIUG9OIJzxnxWCVyZSvMWzJBc6J3Mq+Ok4Jb+Ldhnurk7snf8OJNsy6qVT9h8/rw/kDeVqEklkPb7475jGdZ8USLQw/sNfj0JEuyhQ4bmJso3G8o6tTZTYXw7kwowo3z7tT3IhGDCJwEl+hn1kzxW+92FTZ/JGv6Cj9qnDhj6T/bRQo7AVgjCESqHvauSWD7UTMeh3a5jBSbjyvWvAtNREmOh6Ko="
+    secure: $releasekey
   file: "SFRT_Attendance*.AppImage"
   on:
     tags: true
