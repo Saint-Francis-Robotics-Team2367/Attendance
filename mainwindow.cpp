@@ -59,7 +59,7 @@ int MainWindow::gotText()
         }
 
         else {
-            ui->log->append("FREAKING A");
+            ui->log->append("Unable to open file.");
         }
         
     }
