@@ -12,9 +12,6 @@ ui(new Ui::MainWindow)
     ui->setupUi(this);
     connect(ui->numberEntry,SIGNAL(returnPressed()),this,SLOT(gotText()));
     connect(ui->actionAdd_User,SIGNAL(triggered()),this,SLOT(addNewUser()));
-//    QTimer *timer = new QTimer(this);   //make a timer which will call a method
-//    connect(timer, SIGNAL(timeout()), this, SLOT(signAllOut()));    //connecting the timer with the method
-//    timer->start(1000); //setting the timer to call the method every 1000 milliseconds or 1 second
     manager = new FileManager();
     this->students = manager->readIds();
     this->setWindowTitle("SFRT Attendance");
@@ -40,9 +37,6 @@ int MainWindow::gotText()
     QString time = QTime::currentTime().toString();
 //    QString date = QDate::currentDate().toString();
 
-    if(currStudent->getName()=="Daniel Grau")
-        QSound::play("Yeah.wav");
-
     if (!currStudent->getStatus())
     {   //if the user is not signed in
         
@@ -55,9 +49,7 @@ int MainWindow::gotText()
         currStudent->setLastTimeSignIn();  //and start the timer for how long he is there
 
         QFile file("data.csv");
-        
-        //QFileInfo fileInfo("data.csv");
-        //ui->log->append(fileInfo.absoluteFilePath());
+
         
         if (file.open(QFile::WriteOnly|QFile::Append))
         {
@@ -259,10 +251,10 @@ void MainWindow::addNewUser()
     else if (checkExistingUser(name))   {
         QSound::play("error.wav");
         QMessageBox msgBox;
-        msgBox.setText("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to Daniel Grau or Sameer Vijay");
+        msgBox.setText("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to the Code Lead");
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.exec();
-        ui->log->append("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to Daniel Grau or Sameer Vijay");
+        ui->log->append("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to the Code Lead");
     }
 
     else    {
