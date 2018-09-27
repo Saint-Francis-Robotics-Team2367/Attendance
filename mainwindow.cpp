@@ -241,7 +241,7 @@ void MainWindow::addNewUser()
 {
     QString name = QInputDialog::getText(this, tr("What is your name"),tr("Enter name:"), QLineEdit::Normal,"John Doe");
     QString id = QInputDialog::getText(this, tr("ID #"),tr("Enter school ID #:"), QLineEdit::Normal,"1234");
-    QString barcode = QInputDialog::getText(this, tr("Barcode"),tr("Scan your barcode:"), QLineEdit::Normal,"");
+    QString barcode = QInputDialog::getText(this, tr("Barcode"),tr("Scan your barcode or press enter if no barcode:"), QLineEdit::Normal,"");
 
     if (name.isEmpty() || id.isEmpty() || barcode.isEmpty()) {
         ui->log->append("Cancel was probably pressed at some point. Please try signing in again");
