@@ -18,8 +18,9 @@ public:
     QTime getLastTimeSignIn();
     void setLastTimeSignIn();
 
-    bool getStatus() const;
-    void setStatus(bool value);
+    enum class Status {SIGNED_IN, CLEANING_UP, SIGNED_OUT};
+    Status getStatus() const;
+    void setStatus(Status value);
 
     QString getBarcodeID() const;
     void setBarcodeID(int value);
@@ -33,7 +34,7 @@ private:
     QString name;
     QTime lastTimeSignIn;
     QDate lastDateSignIn;
-    bool status;
+    Status status;
 
 };
 

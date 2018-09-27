@@ -40,12 +40,12 @@ int MainWindow::gotText()
     QString time = QTime::currentTime().toString();
     //QString date = QDate::currentDate().toString();
 
-    if (!currStudent->getStatus())
+    if (!(currStudent->getStatus() == Student::Status::SIGNED_IN))
     {   //if the user is not signed in
         
         currStudent->setLastDateSignIn();
 
-        currStudent->setStatus(true);   //sign him in
+        currStudent->setStatus(Student::Status::SIGNED_IN);   //sign him in
 
         ui->log->append("Signed in: " + currStudent->getName());
 
@@ -69,9 +69,9 @@ int MainWindow::gotText()
         
     }
 
-    else if (currStudent->getStatus()) {   //if the user is signed in
+    else if (currStudent->getStatus() == Student::Status::SIGNED_IN) {   //if the user is signed in
 
-        currStudent->setStatus(false);  //sign him out
+        currStudent->setStatus(Student::Status::SIGNED_OUT);  //sign him out
 
         //int elapsed = currStudent->getLastTimeSignIn().elapsed();  //magically get the numbers for how long he has been there
         int elapsed = currStudent->getLastTimeSignIn().secsTo(QTime::currentTime()) + (24 * 60 * 60 * currStudent->getLastDateSignIn().daysTo(QDate::currentDate()));
@@ -158,7 +158,7 @@ int MainWindow::gotText()
 
         if (currStudent->getName() == line.section(';',2,2))    {
 
-            if (currStudent->getStatus() == true)   {
+            if (currStudent->getStatus() == Student::Status::SIGNED_IN)   {
                 rawText.append(line.section(';',0,2) + ";Sign In;" + currStudent->getLastTimeSignIn().toString() + ";" + currStudent->getLastDateSignIn().toString());
             }   else    {
                 rawText.append(line.section(';',0,2) + ";Sign Out;" + currStudent->getLastTimeSignIn().toString() + ";" + currStudent->getLastDateSignIn().toString());

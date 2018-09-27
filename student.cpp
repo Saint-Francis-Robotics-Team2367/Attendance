@@ -6,8 +6,9 @@ Student::Student(QString name, QString barcodeID, QString studentID, QString sta
     this->barcodeID = barcodeID;
     this->studentID = studentID;
 
-    if (status == "Sign Out") this->status = false;
-    else this->status = true;
+    if (status == "Sign In") this->status = Student::Status::SIGNED_IN;
+    if(status == "Clean Up") this->status = Student::Status::CLEANING_UP;
+    else this->status = Student::Status::SIGNED_OUT;
 
     this->lastTimeSignIn = QTime::fromString(time);
     this->lastDateSignIn = QDate::fromString(date);
@@ -41,12 +42,12 @@ void Student::setLastTimeSignIn()   {
     lastTimeSignIn.start();
 }
 
-bool Student::getStatus() const
+Student::Status Student::getStatus() const
 {
     return status;
 }
 
-void Student::setStatus(bool value)
+void Student::setStatus(Student::Status value)
 {
     status = value;
 }
