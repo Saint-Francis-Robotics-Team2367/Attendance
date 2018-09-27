@@ -12,9 +12,9 @@ ui(new Ui::MainWindow)
     ui->setupUi(this);
     connect(ui->numberEntry,SIGNAL(returnPressed()),this,SLOT(gotText()));
     connect(ui->actionAdd_User,SIGNAL(triggered()),this,SLOT(addNewUser()));
-//    QTimer *timer = new QTimer(this);   //make a timer which will call a method
-//    connect(timer, SIGNAL(timeout()), this, SLOT(signAllOut()));    //connecting the timer with the method
-//    timer->start(1000); //setting the timer to call the method every 1000 milliseconds or 1 second
+    //QTimer *timer = new QTimer(this);   //make a timer which will call a method
+    //connect(timer, SIGNAL(timeout()), this, SLOT(signAllOut()));    //connecting the timer with the method
+    //timer->start(1000); //setting the timer to call the method every 1000 milliseconds or 1 second
     manager = new FileManager();
     this->students = manager->readIds();
     this->setWindowTitle("SFRT Attendance");
@@ -38,7 +38,7 @@ int MainWindow::gotText()
     }
 
     QString time = QTime::currentTime().toString();
-//    QString date = QDate::currentDate().toString();
+    //QString date = QDate::currentDate().toString();
 
     if (!currStudent->getStatus())
     {   //if the user is not signed in
@@ -73,7 +73,7 @@ int MainWindow::gotText()
 
         currStudent->setStatus(false);  //sign him out
 
-//        int elapsed = currStudent->getLastTimeSignIn().elapsed();  //magically get the numbers for how long he has been there
+        //int elapsed = currStudent->getLastTimeSignIn().elapsed();  //magically get the numbers for how long he has been there
         int elapsed = currStudent->getLastTimeSignIn().secsTo(QTime::currentTime()) + (24 * 60 * 60 * currStudent->getLastDateSignIn().daysTo(QDate::currentDate()));
 
         int seconds = elapsed % 60 ;
