@@ -160,7 +160,9 @@ int MainWindow::gotText()
 
             if (currStudent->getStatus() == Student::Status::SIGNED_IN)   {
                 rawText.append(line.section(';',0,2) + ";Sign In;" + currStudent->getLastTimeSignIn().toString() + ";" + currStudent->getLastDateSignIn().toString());
-            }   else    {
+            }   else if(currStudent->getStatus() == Student::Status::CLEANING_UP)   {
+                rawText.append(line.section(';',0,2) + ";Clean Up;" + currStudent->getLastTimeSignIn().toString() + ";" + currStudent->getLastDateSignIn().toString());
+            }   else {
                 rawText.append(line.section(';',0,2) + ";Sign Out;" + currStudent->getLastTimeSignIn().toString() + ";" + currStudent->getLastDateSignIn().toString());
             }
 
