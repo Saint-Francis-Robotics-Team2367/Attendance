@@ -1,6 +1,6 @@
 #include "student.h"
 
-Student::Student(QString name, QString barcodeID, QString studentID, QString status, QString time, QString date)
+Student::Student(QString name, QString barcodeID, QString studentID, QString status, QString time, QString date, QString cleanUp)
 {
     this->name = name;
     this->barcodeID = barcodeID;
@@ -12,6 +12,7 @@ Student::Student(QString name, QString barcodeID, QString studentID, QString sta
 
     this->lastTimeSignIn = QTime::fromString(time);
     this->lastDateSignIn = QDate::fromString(date);
+    this->lastTimeCleanUp = QTime::fromString(cleanUp);
 }
 
 QString Student::getStudentID() const
@@ -33,7 +34,7 @@ void Student::setName(const QString &value)
 {
     name = value;
 }
-QTime Student::getLastTimeSignIn()
+QTime Student::getLastTimeSignIn() const
 {
     return lastTimeSignIn;
 }
@@ -70,6 +71,15 @@ QDate Student::getLastDateSignIn() const
 void Student::setLastDateSignIn()
 {
     lastDateSignIn = QDate::currentDate();
+}
+
+QTime Student::getLastTimeCleanUp() const
+{
+    return lastTimeCleanUp;
+}
+
+void Student::setLastTimeCleanUp()   {
+    lastTimeCleanUp.start();
 }
 
 

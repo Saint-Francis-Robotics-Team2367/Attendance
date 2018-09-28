@@ -5,7 +5,7 @@
 class Student
 {
 public:
-    Student(QString name, QString barcodeID, QString studentID, QString status, QString time, QString date);
+    Student(QString name, QString barcodeID, QString studentID, QString status, QString time, QString date, QString cleanUp);
 
     QString getStudentID() const;
     void setStudentID(int value);
@@ -15,7 +15,7 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
-    QTime getLastTimeSignIn();
+    QTime getLastTimeSignIn() const;
     void setLastTimeSignIn();
 
     enum class Status {SIGNED_IN, CLEANING_UP, SIGNED_OUT};
@@ -28,12 +28,16 @@ public:
     QDate getLastDateSignIn() const;
     void setLastDateSignIn();
 
+    QTime getLastTimeCleanUp() const;
+    void setLastTimeCleanUp();
+
 private:
     QString studentID;
     QString barcodeID;
     QString name;
     QTime lastTimeSignIn;
     QDate lastDateSignIn;
+    QTime lastTimeCleanUp;
     Status status;
 
 };
