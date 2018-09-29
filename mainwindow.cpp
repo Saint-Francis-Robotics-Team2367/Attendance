@@ -68,7 +68,8 @@ int MainWindow::gotText()
     else if (currStudent->getStatus()) {   //if the user is signed in
 
         currStudent->setStatus(false);  //sign him out
-        delete ui->working->findItems(currStudent->getName(), Qt::MatchExactly).first();
+        QList<QListWidgetItem*> listEntry = ui->working->findItems(currStudent->getName(), Qt::MatchExactly);
+        if(!listEntry.isEmpty()) delete listEntry.first();
 
         int elapsed = currStudent->getLastTimeSignIn().secsTo(QTime::currentTime()) + (24 * 60 * 60 * currStudent->getLastDateSignIn().daysTo(QDate::currentDate()));
 
