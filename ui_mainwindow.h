@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.4.2
+** Created by: Qt User Interface Compiler version 5.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -16,6 +16,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -32,14 +33,13 @@ public:
     QAction *actionAdd_User;
     QWidget *centralWidget;
     QLineEdit *numberEntry;
-    QTextBrowser *log;
     QLabel *label;
+    QTextBrowser *log;
+    QListWidget *working;
+    QListWidget *cleaning;
     QStatusBar *statusBar;
     QMenuBar *menuBar;
     QMenu *menuFile;
-
-//    QTextBrowser *textBrowserErrors;
-//    QLabel *labelErrors;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -54,34 +54,24 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         numberEntry = new QLineEdit(centralWidget);
         numberEntry->setObjectName(QStringLiteral("numberEntry"));
-        numberEntry->setGeometry(QRect(210, 280, 161, 21));
-        log = new QTextBrowser(centralWidget);
-        log->setObjectName(QStringLiteral("log"));
-        log->setGeometry(QRect(30, 70, 511, 191));
-//        textBrowserErrors = new QTextBrowser(centralWidget);
-//        textBrowserErrors->setObjectName(QStringLiteral("textBrowserErrors"));
-//        textBrowserErrors->setGeometry(QRect(30, 330, 511, 61));
-        QFont font;
-        font.setFamily(QStringLiteral("Times New Roman"));
-        font.setPointSize(10);
-        log->setFont(font);
-//        textBrowserErrors->setFont(font);
+        numberEntry->setGeometry(QRect(210, 370, 161, 21));
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 20, 551, 21));
-//        labelErrors = new QLabel(centralWidget);
-//        labelErrors->setObjectName(QStringLiteral("labelErrors"));
-//        labelErrors->setGeometry(40, 310, 59, 16);
-        QFont font1;
-        font1.setFamily(QStringLiteral("Times New Roman"));
-        font1.setPointSize(24);
-        label->setFont(font1);
+        QFont font;
+        font.setFamily(QStringLiteral("Times New Roman"));
+        font.setPointSize(24);
+        label->setFont(font);
         label->setAlignment(Qt::AlignCenter);
-//        QFont font2;
-//        font2.setFamily(QStringLiteral("Times New Roman"));
-//        font2.setPointSize(16);
-//        labelErrors->setFont(font2);
-//        labelErrors->setAlignment(Qt::AlignCenter);
+        log = new QTextBrowser(centralWidget);
+        log->setObjectName(QStringLiteral("log"));
+        log->setGeometry(QRect(60, 330, 491, 31));
+        working = new QListWidget(centralWidget);
+        working->setObjectName(QStringLiteral("working"));
+        working->setGeometry(QRect(20, 81, 251, 211));
+        cleaning = new QListWidget(centralWidget);
+        cleaning->setObjectName(QStringLiteral("cleaning"));
+        cleaning->setGeometry(QRect(295, 80, 241, 211));
         MainWindow->setCentralWidget(centralWidget);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -89,7 +79,7 @@ public:
         MainWindow->setStatusBar(statusBar);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 568, 21));
+        menuBar->setGeometry(QRect(0, 0, 568, 20));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         MainWindow->setMenuBar(menuBar);
@@ -108,7 +98,6 @@ public:
         actionNewUser->setText(QApplication::translate("MainWindow", "Add New User", 0));
         actionAdd_User->setText(QApplication::translate("MainWindow", "Add User", 0));
         label->setText(QApplication::translate("MainWindow", "Attendance", 0));
-//        labelErrors->setText(QApplication::translate("MainWindow", "Errors", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
     } // retranslateUi
 

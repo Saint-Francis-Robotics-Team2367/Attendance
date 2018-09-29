@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QSound>
 #include <qtimer.h>
+#include <QList>
 
 namespace Ui {
     class MainWindow;

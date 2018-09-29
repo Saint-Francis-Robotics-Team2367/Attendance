@@ -30,7 +30,7 @@ int MainWindow::gotText()
 
     if(currStudent==NULL)   {
         QSound::play("error.wav");
-        ui->log->append("Invalid ID: Please try again");
+        ui->log->setText("Invalid ID: Please try again");
         return 0;
     }
 
@@ -43,8 +43,9 @@ int MainWindow::gotText()
         currStudent->setLastDateSignIn();
 
         currStudent->setStatus(true);   //sign him in
+        ui->working->addItem(currStudent->getName());
 
-        ui->log->append("Signed in: " + currStudent->getName());
+        ui->log->setText("Signed in: " + currStudent->getName());
 
         currStudent->setLastTimeSignIn();  //and start the timer for how long he is there
 
@@ -59,7 +60,7 @@ int MainWindow::gotText()
         }
 
         else {
-            ui->log->append("Unable to open file.");
+            ui->log->setText("Unable to open file.");
         }
         
     }
@@ -67,8 +68,8 @@ int MainWindow::gotText()
     else if (currStudent->getStatus()) {   //if the user is signed in
 
         currStudent->setStatus(false);  //sign him out
+        delete ui->working->findItems(currStudent->getName(), Qt::MatchExactly).first();
 
-//        int elapsed = currStudent->getLastTimeSignIn().elapsed();  //magically get the numbers for how long he has been there
         int elapsed = currStudent->getLastTimeSignIn().secsTo(QTime::currentTime()) + (24 * 60 * 60 * currStudent->getLastDateSignIn().daysTo(QDate::currentDate()));
 
         int seconds = elapsed % 60 ;
@@ -76,9 +77,7 @@ int MainWindow::gotText()
         int hours   = (int) ((elapsed / (60 * 60) ) % 24);
         if(currStudent->getLastDateSignIn().daysTo(QDate::currentDate())>=1)
          {
-            ui->log->append("Signed out: " + currStudent->getName() + " || Duration: 0:00:00");  //display it to him
-
-            ui->log->append("Next Time Remember to Sign Out");
+            ui->log->setText("Signed out: " + currStudent->getName() + " || Duration: 0:00:00 -" + "-Next Time Remember to Sign Out");  //display it to him
 
             QTime realTime = currStudent->getLastTimeSignIn();
 
@@ -96,7 +95,7 @@ int MainWindow::gotText()
                 }
                 file.close();
             }
-            ui->numberEntry->setText(currStudent->getStudentID());
+
 
             gotText();  //call the function again to sign them in automatically
 
@@ -122,7 +121,7 @@ int MainWindow::gotText()
             } else {
                 secondsString = QString::number(seconds);
             }
-            ui->log->append("Signed out: " + currStudent->getName() + " || Duration: " +  hoursString + ":" + minutesString + ":" +  secondsString);  //display it to him
+            ui->log->setText("Signed out: " + currStudent->getName() + " || Duration: " +  hoursString + ":" + minutesString + ":" +  secondsString);  //display it to him
 
             currStudent->setLastTimeSignIn();    //and restart the timer
 
@@ -239,12 +238,12 @@ void MainWindow::addNewUser()
     QString barcode = QInputDialog::getText(this, tr("Barcode"),tr("Scan your barcode:"), QLineEdit::Normal,"");
 
     if (name.isEmpty() || id.isEmpty() || barcode.isEmpty()) {
-        ui->log->append("Cancel was probably pressed at some point. Please try signing in again");
+        ui->log->setText("Cancel was probably pressed at some point. Please try signing in again");
         QSound::play("error.wav");
     }
 
     else if (name == "John Doe" || id == "1234")    {
-        ui->log->append("An actual name and/or id wasn't entered. \"OK\" was pressed with the default value not changed");
+        ui->log->setText("An actual name and/or id wasn't entered. \"OK\" was pressed with the default value not changed");
         QSound::play("error.wav");
     }
 
@@ -254,7 +253,7 @@ void MainWindow::addNewUser()
         msgBox.setText("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to the Code Lead");
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.exec();
-        ui->log->append("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to the Code Lead");
+        ui->log->setText("You are already part of the system. If you entered your ID or Barcode incorrectly, please talk to the Code Lead");
     }
 
     else    {
